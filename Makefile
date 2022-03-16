@@ -22,5 +22,5 @@ command_helper.o: command_helper.c
 	$(CC) $(DEBG) -c command_helper.c
 
 clean:
-	rm -f *.o test *.a
+	rm -f *.o *.a
 	rm -f shell

@@ -1,5 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <dirent.h>
+
 
 #define ENTER_KEY 0x0A
 
@@ -39,4 +41,17 @@ char* input_command() {
     }
 
     return command;
+}
+
+void print_dir(char* dir_path, int* options){
+    DIR *folder = opendir(dir_path); //pointer that acts as the directory handler through function
+    if(folder == NULL){
+        perror("opendir ERROR");
+        exit(1);
+    }
+    struct dirent *entry; // struct that contains information about a specific entry read from a directory 
+    while( (entry=readdir(folder)) ) // while entry is not null print the entry name
+        printf("%s  ", entry->d_name);
+    
+    closedir(folder);
 }
