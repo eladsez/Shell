@@ -5,6 +5,9 @@ char exitC[] = "EXIT";
 char echoC[] = "ECHO";
 char dirC[] = "DIR";
 char cdC[] = "CD";
+char tcpC[] = "TCP PORT";
+char copyC[] = "COPY";
+char deleteC[] = "DELETE";
 
 
 /*

@@ -10,7 +10,6 @@
 void print_prompt(){
     char cwd[PATH_MAX];
    if (getcwd(cwd, sizeof(cwd)) != NULL){
-       printf("\n");
        printf("\033[1;35m");
        printf("user@myshell");
        printf("\033[1;36m");
