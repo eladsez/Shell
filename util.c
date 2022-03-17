@@ -2,13 +2,14 @@
 #include <limits.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define TRUE 1
 #define FALSE 0
 
 
 void print_prompt(){
-    char cwd[PATH_MAX];
+    char cwd[PATH_MAX]; // PATH_MAX taken from limits.h 
    if (getcwd(cwd, sizeof(cwd)) != NULL){
        printf("\033[1;35m");
        printf("user@myshell");
@@ -32,4 +33,13 @@ int str_cmp(char* str1, size_t len1, char* str2, size_t len2){
             return FALSE;
     }
     return TRUE;
+}
+
+size_t find_space(char* paths){
+    for (size_t i = 0; i < strlen(paths); ++i){
+        if (paths[i] == ' ')
+            return i;
+    }
+
+    return -1;
 }

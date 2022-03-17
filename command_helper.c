@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <dirent.h>
 
-
 #define ENTER_KEY 0x0A
 
 
@@ -33,7 +32,7 @@ char* input_command() {
     }
     command[com_len++]='\0';
 
-    command = realloc(command, sizeof(char) * com_len);
+    command = realloc(command, sizeof(char) * com_len); // shrink the command to his original size
     
     if (command == NULL){
         perror("realloc ERROR");
@@ -54,4 +53,20 @@ void print_dir(char* dir_path, int* options){
         printf("%s  ", entry->d_name);
     
     closedir(folder);
+}
+
+void copy_file(char* from, char* to){
+    FILE *origin= fopen(from, "r");
+    FILE *copy = fopen(to, "w");
+
+    if (origin == NULL || copy == NULL){
+        perror("ERROR open files");
+        exit(1);
+    }
+
+    while(!feof(origin))
+        fputc(fgetc(origin), copy);
+    
+    fclose(origin);
+    fclose(copy);
 }

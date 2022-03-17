@@ -51,6 +51,13 @@ int main(){
             // TODO
         }
 
+        else if (str_cmp(copyC, 4, command, 4)){
+            size_t space = find_space(command + 5) + 5;
+            if (space == -1) continue; // in case there is no two paths
+            command[space] = '\0';
+            copy_file(command + 5, command + space + 1);
+        }
+
         else
             system(command);
 
