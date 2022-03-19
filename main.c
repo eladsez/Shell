@@ -12,6 +12,7 @@
 
 int main(){
     char* command; // represent the current command input by input_command function
+    int local = TRUE; // output to stdout or to the server init in stdout mode
     while (TRUE){
 
         print_prompt();

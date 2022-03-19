@@ -4,7 +4,6 @@
 
 #define ENTER_KEY 0x0A
 
-
 /*
 This function get a command from sdtin in a dynamic way and retrive it to the main program (the main free it all)
 */
@@ -42,6 +41,7 @@ char* input_command() {
     return command;
 }
 
+
 void print_dir(char* dir_path, int* options){
     DIR *folder = opendir(dir_path); //pointer that acts as the directory handler through function
     if(folder == NULL){
@@ -54,6 +54,7 @@ void print_dir(char* dir_path, int* options){
     
     closedir(folder);
 }
+
 
 void copy_file(char* from, char* to){
     FILE *origin= fopen(from, "r");
@@ -69,4 +70,14 @@ void copy_file(char* from, char* to){
     
     fclose(origin);
     fclose(copy);
+}
+
+
+void tcp_client(){
+    int sock;
+}
+
+
+void exec(char* command){
+
 }
