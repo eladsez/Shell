@@ -1,8 +1,13 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <dirent.h>
+#include <string.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#include <unistd.h>
+#include <errno.h> 
 
-#define ENTER_KEY 0x0A
+#include "shell.h"
 
 /*
 This function get a command from sdtin in a dynamic way and retrive it to the main program (the main free it all)
@@ -72,9 +77,29 @@ void copy_file(char* from, char* to){
     fclose(copy);
 }
 
-
 void tcp_client(){
-    int sock;
+    // if (client_sock != -1) return;
+    if((client_sock = socket(AF_INET, SOCK_STREAM, 0)) == -1){
+        printf("%d ERROR create socket\n", errno);
+        exit(1);
+    }
+    struct sockaddr_in server_addr;
+    memset(&server_addr, 0, sizeof(server_addr));
+    server_addr.sin_family = AF_INET;
+    server_addr.sin_port = htons(SERVER_PORT);
+    server_addr.sin_addr.s_addr = INADDR_ANY; // the address assigned is 0.0.0.0
+
+    if (connect(client_sock, (struct sockaddr *) &server_addr, sizeof(server_addr)) == -1){
+	   printf("%d ERROR to connect the server\n", errno);
+       exit(1);
+    }
+}
+
+void close_tcp_client(){
+    if (client_sock != -1){
+        close(client_sock);
+        client_sock = -1;
+    }
 }
 
 

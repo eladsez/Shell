@@ -4,19 +4,30 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define TRUE 1
-#define FALSE 0
-
+#include "shell.h"
 
 void print_prompt(){
-    char cwd[PATH_MAX]; // PATH_MAX taken from limits.h 
+    char cwd[PATH_MAX]; // PATH_MAX taken from limits.h
+    FILE* copy_stdout;
+
+    if (in_server){
+        copy_stdout = fdopen(TEMP_STDOUT_FD, "w");
+    }
+    else{
+        copy_stdout = stdout;
+    }
+ 
    if (getcwd(cwd, sizeof(cwd)) != NULL){
-       printf("\033[1;35m");
-       printf("user@myshell");
-       printf("\033[1;36m");
-       printf(":~%s$ ", cwd);
-       printf("\033[0;37m");
+       fprintf(copy_stdout, "\033[1;35m");
+       if (in_server)
+           fprintf(copy_stdout, "user@server");
+       else
+           fprintf(copy_stdout, "user@myshell"); 
+       fprintf(copy_stdout, "\033[1;36m");
+       fprintf(copy_stdout, ":~%s$ ", cwd);
+       fprintf(copy_stdout, "\033[0;37m");
    } 
+
    else{
        perror("cwd ERROR");
        exit(1);

@@ -1,15 +1,16 @@
 #ifndef _SHELL_
 #define _SHELL_
 
-char exitC[] = "EXIT";
-char echoC[] = "ECHO";
-char dirC[] = "DIR";
-char cdC[] = "CD";
-char tcpC[] = "TCP PORT";
-char localC[] = "LOACL";
-char copyC[] = "COPY";
-char deleteC[] = "DELETE";
+#define TRUE 1
+#define FALSE 0
+#define STDOUT_FD 1
+#define TEMP_STDOUT_FD 500
+#define SERVER_PORT 5550
+#define SERVER_IP_ADDRESS "127.0.0.1" 
+#define ENTER_KEY 0x0A
 
+int client_sock;
+int in_server;
 
 /*
 Function from util.c file
@@ -25,11 +26,7 @@ char* input_command();
 void print_dir(char* dir_path, int* options);
 void copy_file(char* from, char* to);
 void exec(char* command);
-
-/*
-Function from tcp_client for TCP PORT command
-*/
-void client_connect();
-void server_stdout(char* output); // this one can called only if client_sock != NULL
+void tcp_client();
+void close_tcp_client();
 
 #endif
