@@ -103,6 +103,6 @@ void close_tcp_client(){
 }
 
 
-void exec(char* command){
+void exec(char* command, char** exec_buff){
 
 }

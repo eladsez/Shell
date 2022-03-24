@@ -54,3 +54,23 @@ size_t find_space(char* paths){
 
     return -1;
 }
+
+int count_space(char* str){
+    int count = 0;
+    for (int i =0; i < strlen(str); ++i){
+        if (str[i] == ' ')
+            ++count;
+    }
+    return count;
+}
+
+void parse_spaces(char** str, char*** splited){
+    int index = 0;
+    char* temp;
+    temp = strtok(*str, " ");
+
+    while (temp != NULL){
+        (*splited)[index++] = temp;
+        temp = strtok(NULL, " ");
+    }
+}
