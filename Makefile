@@ -3,8 +3,8 @@ DEBG = -Wall -g
 OBJECTS = command_helper.o util.o 
 # SOURCES = main.c
 
-
 all:shell server
+	#./shell && make clean
 
 shell: main.o shell_lib.a
 	$(CC) $(DEBG) main.o shell_lib.a -o shell

@@ -9,7 +9,7 @@
 int main(){
     char* command; // represent the current command input by input_command function
     in_server = FALSE;
-
+    client_sock = 0;
     while (TRUE){
 
         print_prompt();
@@ -66,8 +66,9 @@ int main(){
         }
 
         else{
-            // system(command);
-            exec(command);
+//            system(command);
+//            exec_no_pipe(command); // my command that using execvp fork and wait implement in command_helper.c
+            pipe_control(command);
         }
 
         if (command != NULL)
