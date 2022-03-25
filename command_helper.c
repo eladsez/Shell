@@ -5,6 +5,7 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <unistd.h>
+#include<sys/wait.h>
 #include <errno.h> 
 
 #include "shell.h"
@@ -19,7 +20,7 @@ char* input_command() {
         perror("malloc ERROR");
         exit(1);
     }
-    char c = getchar();
+    char c = (char)getchar();
     size_t com_len = 0; // the actual command size
     while (c != ENTER_KEY){
         command[com_len++] = c;
@@ -32,7 +33,7 @@ char* input_command() {
             }
         }
 
-        c = getchar();
+        c = (char) getchar();
     }
     command[com_len++]='\0';
 
@@ -104,11 +105,20 @@ void close_tcp_client(){
 
 
 void exec(char* command){
-    unsigned int buff_size = count_space(command);
-    char *splited_exec[buff_size + 2];
+    unsigned int buff_size = count_space(command) + 2;
+    char *splited_exec[buff_size];
     parse_spaces(command, splited_exec);
-    for (int i = 0; i < buff_size + 2; ++i){
-        printf("%s\n", splited_exec[i]);
+
+    int pid = fork();
+    if (pid < 0){
+        printf("%d ERROR with exec fork", errno);
+        exit(1);
     }
+    else if (pid == 0)
+        execvp(splited_exec[0], splited_exec);
+    else
+        wait(NULL);
+
+
 
 }

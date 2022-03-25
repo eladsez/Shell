@@ -65,4 +65,5 @@ void parse_spaces(char* str, char** splited){
         splited[index++] = temp;
         temp = strtok(NULL, " ");
     }
+    splited[index] = NULL;
 }
