@@ -67,11 +67,7 @@ int main(){
 
         else{
             // system(command);
-            // TODO: exec
-            unsigned int buff_size = count_space(command);
-            char splited_exec[buff_size + 1];
-            parse_spaces(&command, splited_exec);
-
+            exec(command);
         }
 
         if (command != NULL)

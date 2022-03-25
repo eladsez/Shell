@@ -8,24 +8,16 @@
 
 void print_prompt(){
     char cwd[PATH_MAX]; // PATH_MAX taken from limits.h
-    FILE* copy_stdout;
 
-    if (in_server){
-        copy_stdout = fdopen(TEMP_STDOUT_FD, "w");
-    }
-    else{
-        copy_stdout = stdout;
-    }
- 
    if (getcwd(cwd, sizeof(cwd)) != NULL){
-       fprintf(copy_stdout, "\033[1;35m");
+       fprintf(stdout, "\033[1;35m");
        if (in_server)
-           fprintf(copy_stdout, "user@server");
+           fprintf(stdout, "user@server");
        else
-           fprintf(copy_stdout, "user@myshell"); 
-       fprintf(copy_stdout, "\033[1;36m");
-       fprintf(copy_stdout, ":~%s$ ", cwd);
-       fprintf(copy_stdout, "\033[0;37m");
+           fprintf(stdout, "user@myshell"); 
+       fprintf(stdout, "\033[1;36m");
+       fprintf(stdout, ":~%s$ ", cwd);
+       fprintf(stdout, "\033[0;37m");
    } 
 
    else{
@@ -64,13 +56,13 @@ int count_space(char* str){
     return count;
 }
 
-void parse_spaces(char** str, char*** splited){
+void parse_spaces(char* str, char** splited){
     int index = 0;
     char* temp;
-    temp = strtok(*str, " ");
+    temp = strtok(str, " ");
 
     while (temp != NULL){
-        (*splited)[index++] = temp;
+        splited[index++] = temp;
         temp = strtok(NULL, " ");
     }
 }

@@ -64,9 +64,8 @@ int main(){
 
     printf("client connect!\n");
 
-    char buff[5120] = {0};
-
     while(TRUE){
+        char buff[5120] = {0};
         int bytes = recv(client_sock, buff, sizeof(buff), 0);
         if (bytes < 0){
             printf("%d ERROR client recv", errno);
@@ -79,7 +78,8 @@ int main(){
             close(client_sock);
             return 0;
         }
-        else
-            printf("%s\n", buff); 
+        else{
+            printf("%s\n", buff);
+        }
     }
 }

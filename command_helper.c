@@ -103,6 +103,12 @@ void close_tcp_client(){
 }
 
 
-void exec(char* command, char** exec_buff){
+void exec(char* command){
+    unsigned int buff_size = count_space(command);
+    char *splited_exec[buff_size + 2];
+    parse_spaces(command, splited_exec);
+    for (int i = 0; i < buff_size + 2; ++i){
+        printf("%s\n", splited_exec[i]);
+    }
 
 }
