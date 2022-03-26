@@ -4,7 +4,7 @@ OBJECTS = command_helper.o util.o
 # SOURCES = main.c
 
 all:shell server
-	#./shell && make clean
+	./shell && make clean
 
 shell: main.o shell_lib.a
 	$(CC) $(DEBG) main.o shell_lib.a -o shell
@@ -25,5 +25,4 @@ server: tcp_server.c
 	$(CC) $(DEBG) tcp_server.c -o server 
 
 clean:
-	rm -f *.o *.a test*
-	rm -f shell server
+	rm -f *.o *.a test* shell server

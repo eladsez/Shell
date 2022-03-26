@@ -114,8 +114,10 @@ void exec_no_pipe(char *command) {
         exit(1);
     } else if (pid == 0)
         execvp(splited_exec[0], splited_exec);
-    else
+    else {
         wait(NULL);
+    }
+
 }
 
 
@@ -148,6 +150,7 @@ int rec_pipe(char *commands[], int size) {
             close(pipe1[1]);
             pipe_exec(commands[0]);
         } else {
+            wait(NULL);
             close(pipe1[1]);
             return pipe1[0];
         }
@@ -172,11 +175,13 @@ int rec_pipe(char *commands[], int size) {
             close(pipe2[1]);
             pipe_exec(commands[size]);
         } else {
+            wait(NULL);
             close(pipe1);
             close(pipe2[1]);
             return pipe2[0];
         }
     }
+    return -1;
 }
 
 
@@ -190,17 +195,19 @@ void pipe_control(char *command) {
     char *commands[comm_size];
     parse_str(command, commands, "|");
     int pipe = rec_pipe(commands, comm_size - 2);
-    // input from pipe2
-    dup2(pipe, 0);
-    // output to stdout (already done)
-    // close fds
-    close(pipe);
     int pid = fork();
     if (pid < 0) {
         printf("%d ERROR with exec fork", errno);
         exit(1);
     } else if (pid == 0) {
+        // input from pipe2
+        dup2(pipe, 0);
+        // output to stdout (already done)
+        // close fds
+        close(pipe);
         pipe_exec(commands[comm_size - 1]);
-    } else
+    } else {
         wait(NULL);
+        close(pipe);
+    }
 }

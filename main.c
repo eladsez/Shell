@@ -13,7 +13,7 @@ int main(){
     while (TRUE){
 
         print_prompt();
-        command = input_command(command);
+        command = input_command();
 
         if (!strcmp("EXIT", command)){ // strcmp return a non-zero integer if the strings dont match and zero if they do
             free(command);
@@ -67,7 +67,6 @@ int main(){
 
         else{
 //            system(command);
-//            exec_no_pipe(command); // my command that using execvp fork and wait implement in command_helper.c
             pipe_control(command);
         }
 
