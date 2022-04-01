@@ -5,7 +5,7 @@
 #define FALSE 0
 #define STDOUT_FD 1
 #define TEMP_STDOUT_FD 888
-#define SERVER_PORT 5550
+#define SERVER_PORT 3490
 #define SERVER_IP_ADDRESS "127.0.0.1"
 #define ENTER_KEY 0x0A
 

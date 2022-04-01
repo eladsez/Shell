@@ -1,3 +1,6 @@
+/**
+ * This file implement a basic tcp server
+ */
 #include <stdio.h>
 #include <string.h>
 #include <sys/socket.h>
@@ -5,7 +8,7 @@
 #include <unistd.h>
 #include <errno.h> 
 
-#define SERVER_PORT 5550
+#define SERVER_PORT 3490
 #define SERVER_IP_ADDRESS "127.0.0.1" // TODO: replace the INADDR_ANY in line 24 with this define
 #define TRUE 1
 
@@ -30,7 +33,7 @@ int main(){
     memset(&server_addr, 0, sizeof(server_addr));
     server_addr.sin_family = AF_INET;
     server_addr.sin_port = htons(SERVER_PORT);
-    server_addr.sin_addr.s_addr = INADDR_ANY; // the address assigned is 0.0.0.0 (in our case same thing ass 127.0.0.1)
+    server_addr.sin_addr.s_addr = inet_addr(SERVER_IP_ADDRESS);
 
     if (bind(server_sock, (struct sockaddr *)&server_addr , sizeof(server_addr)) == -1){
         printf("%d ERROR Bind failed\n", errno);
@@ -51,7 +54,7 @@ int main(){
     socklen_t client_addr_len = sizeof(client_addr);
     int client_sock = -1;
 
-    while(TRUE){
+    while(TRUE){/// handle client connection
         if ((client_sock = accept(server_sock, (struct sockaddr *)&client_addr, &client_addr_len)) == -1){
             printf("%d ERROR accept client failed\n", errno);
             close(server_sock);
@@ -63,7 +66,7 @@ int main(){
 
     printf("client connect!\n");
 
-    while(TRUE){
+    while(TRUE){/// handle client
         char buff[5120] = {0};
         int bytes = recv(client_sock, buff, sizeof(buff), 0);
         if (bytes < 0){

@@ -66,21 +66,23 @@ void print_dir(char *dir_path, int *options) {
 }
 
 /**
- * This function copy a file using file handler library functions
+ * This function copy a file
  * @param from the path we copy the file from
  * @param to the path we copy the file to
  */
 void copy_file(char *from, char *to) {
     FILE *origin = fopen(from, "r");
     FILE *copy = fopen(to, "w");
+    char buf;
 
     if (origin == NULL || copy == NULL) {
         perror("ERROR open files");
         exit(1);
     }
 
-    while (!feof(origin))// while there is more to read from origin
-        fputc(fgetc(origin), copy);
+    while (fread(&buf, 1, 1, origin)) {// while there is more to read from origin
+        fwrite(&buf, 1, 1, copy);
+    }
 
     fclose(origin);
     fclose(copy);
@@ -98,7 +100,7 @@ void tcp_client() {
     memset(&server_addr, 0, sizeof(server_addr));
     server_addr.sin_family = AF_INET;
     server_addr.sin_port = htons(SERVER_PORT);
-    server_addr.sin_addr.s_addr = INADDR_ANY; // the address assigned is 0.0.0.0
+    server_addr.sin_addr.s_addr = inet_addr(SERVER_IP_ADDRESS);
 
     if (connect(client_sock, (struct sockaddr *) &server_addr, sizeof(server_addr)) == -1) {
         printf("%d ERROR to connect the server\n", errno);
@@ -116,9 +118,12 @@ void close_tcp_client() {
     }
 }
 
-
+/**
+ * This function running command with no pipeline trough a child process using execvp() and forK()
+ * @param command - the command to run
+ */
 void exec_no_pipe(char *command) {
-    unsigned int buff_size = count_chars(command, ' ') + 2;
+    unsigned int buff_size = count_chars(command, ' ') + 2;// +2 for the NULL
     char *splited_exec[buff_size];
     parse_str(command, splited_exec, " ");
     splited_exec[buff_size - 1] = NULL;
@@ -134,7 +139,11 @@ void exec_no_pipe(char *command) {
 
 }
 
-
+/**
+ * This is a utility function for the rec_pipe function
+ * just running a command with execvp()
+ * @param command
+ */
 void pipe_exec(char *command) {
     unsigned int buff_size = count_chars(command, ' ') + 2;
     char *splited_exec[buff_size];
@@ -143,9 +152,15 @@ void pipe_exec(char *command) {
     execvp(splited_exec[0], splited_exec);
 }
 
-
+/**
+ * This is a recursive function to execute multiple commands using pipe line method
+ * @param commands
+ * @param size the size of the commands array
+ * @return the output file descriptor of the command one before the last
+ */
 int rec_pipe(char *commands[], int size) {
-    if (size == 0) {
+    if (size == 0) {// if size == 0 then open pipe, run the first command (using pipe_exec func)
+                    // and return the fd of the output (using dup2)
         int pipe1[2];
 
         if (pipe(pipe1) == -1) {
@@ -168,7 +183,8 @@ int rec_pipe(char *commands[], int size) {
             close(pipe1[1]);
             return pipe1[0];
         }
-    } else {
+    } else {// if size != 0 then call again to rec_pipe with size-1 and when it returns the fd output
+            // run your command (the size command) using pipe_exec func and also return the pipe fd of the output
         int pipe1 = rec_pipe(commands, size - 1);
         int pipe2[2];
         if (pipe(pipe2) == -1) {
@@ -198,7 +214,14 @@ int rec_pipe(char *commands[], int size) {
     return -1;
 }
 
-
+/**
+ * This is the main pipe handling function it takes the command and check if it contain a pipeline
+ * if no - just run the command using exec_no_pipe func
+ * if yes - parse by '|' the command to a commands array then call rec_pipe func on it
+ *          and when it returns the one before the last output pipe fd
+ *          then run the last command on this output (using pipe_exec) and print it to stdout
+ * @param command
+ */
 void pipe_control(char *command) {
     int comm_size = count_chars(command, '|') + 1;
 

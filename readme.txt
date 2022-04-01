@@ -12,8 +12,11 @@
 
                               *-HOW TO RUN-*
     First open a terminal in the Shell directory and run <make all>
-    and then just <./shell> to run the code.
+    then just <./shell> to run the code.
     to clean all the objects, libs and executable files run <make clean>
 
     There is also a <make run> rule for compile and run the code all together
-    while typing EXIT in the shell will run make clean
+    while typing <EXIT> in the shell will run make clean after exiting
+
+    In order to run the TCP PORT command you will need to start the server.
+    After you run make all and compile all files run <./server> to start the server

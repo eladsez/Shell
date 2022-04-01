@@ -18,7 +18,7 @@ int main(){
         print_prompt();
         command = input_command();
 
-        if (!strcmp("EXIT", command)){ // strcmp return a non-zero integer if the strings don't match and zero if they do
+        if (!strcmp("EXIT", command)){
             free(command);
             exit(0);
         }
@@ -61,6 +61,8 @@ int main(){
             dup2(TEMP_STDOUT_FD, STDOUT_FD);
         }
 
+        /// in the COPY command i used fopen(), fwrite() and fread() functions
+        /// which all of them are library functions and belong to section 3 in man page
         else if (str_cmp("COPY", 4, command, 4)){
             size_t space = find_space(command + 5) + 5;
             if (space == -1) continue; // in case there is no two paths
@@ -69,7 +71,7 @@ int main(){
         }
 
         else{
-//            system(command); /// The function system is a library function and belong to section 3 in man pages
+//            system(command); /// The function system() is a library function and belong to section 3 in man pages
             pipe_control(command);
         }
 

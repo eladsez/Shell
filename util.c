@@ -51,8 +51,8 @@ int str_cmp(char *str1, size_t len1, char *str2, size_t len2) {
 
 /**
  *
- * @param paths
- * @return
+ * @param paths is a string represent file path
+ * @return the first space char found in path
  */
 size_t find_space(char *paths) {
     for (size_t i = 0; i < strlen(paths); ++i) {
@@ -67,7 +67,7 @@ size_t find_space(char *paths) {
  *
  * @param str
  * @param to_count
- * @return
+ * @return return the occurrences number of the to_count char in str
  */
 int count_chars(char *str, char to_count) {
     int count = 0;
@@ -79,9 +79,9 @@ int count_chars(char *str, char to_count) {
 }
 
 /**
- *
- * @param str
- * @param splited
+ *This function take a string and split it to separate string according to the parse_by char
+ * @param str the origin string
+ * @param splited - the returned separated strings
  * @param parse_by
  */
 void parse_str(char *str, char **splited, char *parse_by) {
