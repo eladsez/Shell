@@ -10,7 +10,7 @@
 
 #include "shell.h"
 
-/*
+/**
 This function get a command from sdtin in a dynamic way and retrieve it to the main program (the main free it all)
 */
 char *input_command() {
@@ -47,7 +47,11 @@ char *input_command() {
     return command;
 }
 
-
+/**
+ * This function print directory content.
+ * @param dir_path - the path to the directory to print
+ * @param options - currently not in use maybe i will extend it later
+ */
 void print_dir(char *dir_path, int *options) {
     DIR *folder = opendir(dir_path); //pointer that acts as the directory handler through function
     if (folder == NULL) {
@@ -61,7 +65,11 @@ void print_dir(char *dir_path, int *options) {
     closedir(folder);
 }
 
-
+/**
+ * This function copy a file using file handler library functions
+ * @param from the path we copy the file from
+ * @param to the path we copy the file to
+ */
 void copy_file(char *from, char *to) {
     FILE *origin = fopen(from, "r");
     FILE *copy = fopen(to, "w");
@@ -71,13 +79,16 @@ void copy_file(char *from, char *to) {
         exit(1);
     }
 
-    while (!feof(origin))
+    while (!feof(origin))// while there is more to read from origin
         fputc(fgetc(origin), copy);
 
     fclose(origin);
     fclose(copy);
 }
 
+/**
+ * This function just open a ordinary tcp connection with the server
+ */
 void tcp_client() {
     if ((client_sock = socket(AF_INET, SOCK_STREAM, 0)) == -1) {
         printf("%d ERROR create socket\n", errno);
@@ -95,6 +106,9 @@ void tcp_client() {
     }
 }
 
+/**
+ * close the tcp connection with the server (just closing the socket)
+ */
 void close_tcp_client() {
     if (client_sock != -1) {
         close(client_sock);

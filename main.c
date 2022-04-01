@@ -1,3 +1,6 @@
+/**
+ * The main file of the Shell
+ */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -15,7 +18,7 @@ int main(){
         print_prompt();
         command = input_command();
 
-        if (!strcmp("EXIT", command)){ // strcmp return a non-zero integer if the strings dont match and zero if they do
+        if (!strcmp("EXIT", command)){ // strcmp return a non-zero integer if the strings don't match and zero if they do
             free(command);
             exit(0);
         }
@@ -32,14 +35,14 @@ int main(){
         }
 
         else if (str_cmp("CD", 2, command, 2)){
-            if (chdir((command + 3)) != 0){
+            if (chdir((command + 3)) != 0){ /// The function chdir is a system call, and belong to section 2 in man pages.
                 perror("chdir ERROR");
                 exit(1);
             }
         }
 
         else if (str_cmp("DELETE", 6, command, 6)){
-            if (unlink((command + 7)) != 0){
+            if (unlink((command + 7)) != 0){ /// The function unlink is a system call and belong to section 2 in man pages.
                 perror("unlink ERROR");
                 exit(1);
             }
@@ -66,13 +69,12 @@ int main(){
         }
 
         else{
-//            system(command);
+//            system(command); /// The function system is a library function and belong to section 3 in man pages
             pipe_control(command);
         }
 
         if (command != NULL)
             free(command);
-
     }
 }
 

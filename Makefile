@@ -4,6 +4,8 @@ OBJECTS = command_helper.o util.o
 # SOURCES = main.c
 
 all:shell server
+
+run:shell server
 	./shell && make clean
 
 shell: main.o shell_lib.a

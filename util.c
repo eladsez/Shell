@@ -1,3 +1,7 @@
+/**
+ * This is the utilities File for the program
+ */
+
 #include <stdio.h>
 #include <limits.h>
 #include <unistd.h>
@@ -6,14 +10,23 @@
 
 #include "shell.h"
 
+/**
+ * This function is printing the prompt of the shell with special colors
+ *  including the path of the current working directory
+ */
 void print_prompt() {
     char cwd[PATH_MAX]; // PATH_MAX taken from limits.h
+    if (in_server){
 
+    }
+    else{
+
+    }
     if (getcwd(cwd, sizeof(cwd)) != NULL) {
         fprintf(stdout, "\033[1;35m");
-        if (in_server)
+        if (in_server) {
             fprintf(stdout, "user@server");
-        else
+        } else
             fprintf(stdout, "user@myshell");
         fprintf(stdout, "\033[1;36m");
         fprintf(stdout, ":~%s$ ", cwd);
@@ -24,7 +37,7 @@ void print_prompt() {
     }
 }
 
-
+// function to compare to strings with specific length
 int str_cmp(char *str1, size_t len1, char *str2, size_t len2) {
     if (len1 != len2)
         return FALSE;
@@ -36,6 +49,11 @@ int str_cmp(char *str1, size_t len1, char *str2, size_t len2) {
     return TRUE;
 }
 
+/**
+ *
+ * @param paths
+ * @return
+ */
 size_t find_space(char *paths) {
     for (size_t i = 0; i < strlen(paths); ++i) {
         if (paths[i] == ' ')
@@ -45,6 +63,12 @@ size_t find_space(char *paths) {
     return -1;
 }
 
+/**
+ *
+ * @param str
+ * @param to_count
+ * @return
+ */
 int count_chars(char *str, char to_count) {
     int count = 0;
     for (int i = 0; i < strlen(str); ++i) {
@@ -54,6 +78,12 @@ int count_chars(char *str, char to_count) {
     return count;
 }
 
+/**
+ *
+ * @param str
+ * @param splited
+ * @param parse_by
+ */
 void parse_str(char *str, char **splited, char *parse_by) {
     int index = 0;
     char *temp;
