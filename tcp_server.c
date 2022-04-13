@@ -9,7 +9,7 @@
 #include <errno.h> 
 
 #define SERVER_PORT 3490
-#define SERVER_IP_ADDRESS "127.0.0.1" // TODO: replace the INADDR_ANY in line 24 with this define
+#define SERVER_IP_ADDRESS "127.0.0.1"
 #define TRUE 1
 
 
